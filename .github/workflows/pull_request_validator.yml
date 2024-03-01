@@ -18,5 +18,7 @@ jobs:
           const template = `Design System Changelog\n\nVersion [X.X.X] - [Date]\n\n### Added\n- New features or components added.\n\n### Updated\n- Existing components or features updated.\n\n### Deprecated\n- Deprecated components with instructions for replacement.\n\n### Removed\n- Removed components or features.\n\n### Fixed\n- Bugs or issues fixed.\n\n### Security\n- Security updates or fixes.`;
           const body = github.event.pull_request.body;
           const valid = body && body.trim() === template.trim();
-          console.log(`PR body valid: ${valid}`);
-          return valid;
+          if (!valid) {
+            console.error('PR body does not match the template.');
+            core.setFailed('PR body validation failed. Please use the provided template.');
+          }
