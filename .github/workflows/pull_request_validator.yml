@@ -1,0 +1,22 @@
+name: Pull Request Body Validator
+
+on:
+  pull_request:
+    types: [opened, edited]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check PR Body
+      id: pr_body
+      uses: actions/github-script@v5
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const template = `Design System Changelog\n\nVersion [X.X.X] - [Date]\n\n### Added\n- New features or components added.\n\n### Updated\n- Existing components or features updated.\n\n### Deprecated\n- Deprecated components with instructions for replacement.\n\n### Removed\n- Removed components or features.\n\n### Fixed\n- Bugs or issues fixed.\n\n### Security\n- Security updates or fixes.`;
+          const body = github.event.pull_request.body;
+          const valid = body && body.trim() === template.trim();
+          console.log(`PR body valid: ${valid}`);
+          return valid;
