@@ -7,9 +7,7 @@ on:
 jobs:
   validate:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Check PR Body
-      id: pr_body
+    - name: "Check PR Body"
       run: echo '${{ toJSON(github.event) }} | jq
       shell: bash
